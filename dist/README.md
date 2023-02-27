@@ -4,7 +4,7 @@
 
 ## Установка
 
-`npm i -s dsedinkin/node-vk-clip-api#latest` или `yarn add dsedinkin/node-vk-clip-api#latest`
+`npm i -s sedlab/node-vk-clip-api#latest` или `yarn add sedlab/node-vk-clip-api#latest`
 
 ## Использование
 

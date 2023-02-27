@@ -1,6 +1,6 @@
 {
   "name": "node-vk-clip-api",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "index.js",
   "module": "index.mjs",
@@ -13,11 +13,11 @@
   "contributors": [],
   "repository": {
     "type": "git",
-    "url": "git@github.com:dsedinkin/node-vk-clip-api.git"
+    "url": "git@github.com:sedlab/node-vk-clip-api.git"
   },
   "keywords": [],
   "peerDependencies": {
     "axios": "^1.3.4",
-    "node-vk-api": "dsedinkin/node-vk-api#latest"
+    "node-vk-api": "sedlab/node-vk-api#latest"
   }
 }
