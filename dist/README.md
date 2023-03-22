@@ -78,3 +78,21 @@ clip.downloadAllOwnerVideos(dir, { owner_id: -170063178, count: 5 })
     console.dir(error, { depth: null });
   });
 ```
+
+#### Получает персонализированную ленту с преднастройками.
+
+```js
+import { ShortVideo } from "node-vk-clip-api";
+
+const TOKEN = ""; // access_token.
+
+const clip = new ShortVideo(TOKEN);
+
+clip.getTopVideos({ tag: "бизнес", count: 1 })
+  .then((resp) => {
+    console.dir(resp, { depth: null });
+  })
+  .catch((error) => {
+    console.dir(error, { depth: null });
+  });
+```
