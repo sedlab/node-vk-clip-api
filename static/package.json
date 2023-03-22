@@ -1,6 +1,6 @@
 {
   "name": "node-vk-clip-api",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "index.js",
   "module": "index.mjs",
