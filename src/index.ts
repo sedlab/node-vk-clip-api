@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import axios from "axios";
 
-import { TCreateRequest, TGetOwnerVideosRequest, TDownloadAllOwnerVideosRequest } from "./types";
+import { TCreateRequest, TGetOwnerVideosRequest, TDownloadAllOwnerVideosRequest, TGetTopVideosRequest } from "./types";
 
 export class ShortVideo {
   #ACCESS_TOKEN: string;
@@ -88,6 +88,8 @@ export class ShortVideo {
               } catch {
                 error.push(id);
               };
+            } else {
+              error.push(id);
             };
           };
           resolve({
@@ -113,6 +115,13 @@ export class ShortVideo {
           });
         };
       })
+      .catch((error) => reject(error));
+  });
+
+  getTopVideos: TGetTopVideosRequest = (params) => new Promise((resolve, reject) => {
+    // Возвращает персонализированную ленту с преднастройками.
+    this.#VK.request("shortVideo.getTopVideos", { ...params })
+      .then((data) => resolve(data))
       .catch((error) => reject(error));
   });
 };

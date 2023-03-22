@@ -67,6 +67,8 @@ class ShortVideo {
             } catch {
               error.push(id);
             }
+          } else {
+            error.push(id);
           }
         }
         resolve({
@@ -92,6 +94,9 @@ class ShortVideo {
         });
       }
     }).catch((error) => reject(error));
+  });
+  getTopVideos = (params) => new Promise((resolve, reject) => {
+    this.#VK.request("shortVideo.getTopVideos", { ...params }).then((data) => resolve(data)).catch((error) => reject(error));
   });
 }
 

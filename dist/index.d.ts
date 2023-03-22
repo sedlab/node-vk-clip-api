@@ -33,44 +33,73 @@ type TGetOwnerVideosParams = {
 };
 type TGetOwnerVideosResponse = {
     count: number;
-    items: Array<{
-        files: TFiles;
-        volume_multiplier: number;
-        timeline_thumbs: TTimelinethumbs;
-        ads: TAds;
-        short_video_info: TShortvideoinfo;
-        stats_pixels: TStatspixel[];
-        can_comment: number;
-        can_like: number;
-        can_repost: number;
-        can_subscribe: number;
-        can_add_to_faves: number;
-        can_add: number;
-        can_play_in_background: number;
-        can_download: number;
-        comments: number;
-        date: number;
-        description: string;
-        duration: number;
-        image: TImage[];
-        first_frame: TFirstframe[];
-        width: number;
-        height: number;
-        id: number;
-        owner_id: number;
-        ov_id: string;
-        title: string;
-        is_favorite: boolean;
-        player: string;
-        added: number;
-        track_code: string;
-        repeat: number;
-        type: string;
-        views: number;
-        likes: TLikes;
-        reposts: TReposts;
-        can_dislike: number;
-    }>;
+    items: Array<TClip>;
+    next_from: string;
+    groups: Array<TGroup>;
+};
+
+type TGetTopVideosRequest = (params: TGetTopVideosParams) => Promise<TGetTopVideosResponse>;
+type TGetTopVideosParams = {
+    tag?: string;
+    count?: number;
+} & any;
+type TGetTopVideosResponse = {
+    count: number;
+    items: Array<TClip>;
+    next_from: string;
+    groups: Array<TGroup>;
+};
+
+type TClip = {
+    files: TFiles;
+    volume_multiplier: number;
+    timeline_thumbs: TTimelinethumbs;
+    ads: TAds;
+    short_video_info: TShortvideoinfo;
+    stats_pixels: TStatspixel[];
+    can_comment: number;
+    can_like: number;
+    can_repost: number;
+    can_subscribe: number;
+    can_add_to_faves: number;
+    can_add: number;
+    can_play_in_background: number;
+    can_download: number;
+    comments: number;
+    date: number;
+    description: string;
+    duration: number;
+    image: TImage[];
+    first_frame: TFirstframe[];
+    width: number;
+    height: number;
+    id: number;
+    owner_id: number;
+    ov_id: string;
+    title: string;
+    is_favorite: boolean;
+    player: string;
+    added: number;
+    track_code: string;
+    repeat: number;
+    type: string;
+    views: number;
+    likes: TLikes;
+    reposts: TReposts;
+    can_dislike: number;
+};
+type TGroup = {
+    id: number;
+    name: string;
+    screen_name: string;
+    is_closed: number;
+    type: string;
+    is_admin: number;
+    is_member: number;
+    is_advertiser: number;
+    photo_50: string;
+    photo_100: string;
+    photo_200: string;
 };
 type TReposts = {
     count: number;
@@ -215,6 +244,7 @@ declare class ShortVideo {
     create: TCreateRequest;
     getOwnerVideos: TGetOwnerVideosRequest;
     downloadAllOwnerVideos: TDownloadAllOwnerVideosRequest;
+    getTopVideos: TGetTopVideosRequest;
 }
 
 export { ShortVideo };
