@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "latest",
+    "@types/download": "^8.0.2",
     "@types/node": "latest",
     "cross-env": "latest",
     "esbuild": "latest",

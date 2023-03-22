@@ -1,25 +1,14 @@
 import { Request } from "node-vk-api";
 import fs from "node:fs";
+import path from "node:path";
 import axios from "axios";
 
-type TParams = {
-  analytics?: string;           // Неизвестно.
-  audio_id?: string;            // Аудиозапись, неизвестно в каком формате.
-  clickable_stickers?: string;  // Кликабельные стикеры, неизвестно в каком формате.
-  description?: string;         // Описание клипа.
-  group_id?: number;            // Номер группы.
-  latitude?: string;            // Широта.
-  longitude?: string;           // Долгота.
-  mask_ids?: string;            // Номера масок.
-  title?: string;               // Название клипа (или видео).
-  wallpost?: number;            // Опубликовать клип на стене или нет.
-};
-
-type TRequest = (url: string, params: TParams) => Promise<boolean>;
+import { TCreateRequest, TGetOwnerVideosRequest, TDownloadAllOwnerVideosRequest } from "./types";
 
 export class ShortVideo {
   #ACCESS_TOKEN: string;
   #USER_AGENT: string;
+  #VK: Request;
 
   constructor(
     token: string,
@@ -27,15 +16,14 @@ export class ShortVideo {
   ) {
     this.#ACCESS_TOKEN = token;
     this.#USER_AGENT = agent;
+    this.#VK = new Request(this.#ACCESS_TOKEN, "5.131", "https://api.vk.com/method/", this.#USER_AGENT);
   };
 
-  create: TRequest = (url, params) => new Promise((resolve, reject) => {
-    const vk = new Request(this.#ACCESS_TOKEN, "5.131", "https://api.vk.com/method/", this.#USER_AGENT);
-
+  create: TCreateRequest = (url, params) => new Promise((resolve, reject) => {
     const { size } = fs.statSync(url);
 
     // Возвращает адрес для загрузки клипа.
-    vk.request("shortVideo.create", { file_size: size, ...params })
+    this.#VK.request("shortVideo.create", { file_size: size, ...params })
       .then(({ upload_url }) => {
         if (upload_url) {
           const file = fs.readFileSync(url);
@@ -69,4 +57,63 @@ export class ShortVideo {
         reject(error);
       });
   });
+
+  getOwnerVideos: TGetOwnerVideosRequest = (params) => new Promise((resolve, reject) => {
+    // Возвращает клипы группы или пользователя.
+    this.#VK.request("shortVideo.getOwnerVideos", { ...params })
+      .then((data) => resolve(data))
+      .catch((error) => reject(error));
+  });
+
+  downloadAllOwnerVideos: TDownloadAllOwnerVideosRequest = (dir, params) => new Promise((resolve, reject) => {
+    // Загружает все клипы группы или пользователя.
+    this.getOwnerVideos(params)
+      .then(async (resp) => {
+        const videos = resp.items;
+        const response: Array<number> = [];
+        const error: Array<number> = [];
+        if (videos && videos.length > 0) {
+          for (let i = 0; i < videos.length; i++) {
+            const video = videos[i];
+            const { files, id } = video;
+            const { mp4_1080: quality1080, mp4_720: quality720, mp4_480: quality480, mp4_360: quality360, mp4_240: quality240, mp4_144: quality144 } = files;
+            const url = quality1080 || quality720 || quality480 || quality360 || quality240 || quality144;
+            if (url) {
+              const { data } = await axios({ method: "GET", url, responseType: "stream", headers: { "User-Agent": this.#USER_AGENT } });
+              const newDir = path.join(dir, `${id}.mp4`);
+              try {
+                const file = fs.createWriteStream(newDir);
+                data.pipe(file);
+                response.push(id);
+              } catch {
+                error.push(id);
+              };
+            };
+          };
+          resolve({
+            response: {
+              count: response.length,
+              items: response
+            },
+            error: {
+              count: error.length,
+              items: error
+            }
+          });
+        } else {
+          resolve({
+            response: {
+              count: 0,
+              items: []
+            },
+            error: {
+              count: 0,
+              items: []
+            }
+          });
+        };
+      })
+      .catch((error) => reject(error));
+  });
 };
+
