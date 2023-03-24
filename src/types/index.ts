@@ -1,7 +1,11 @@
 export * from "./create";
+export * from "./download";
 export * from "./downloadAllOwnerVideos";
+export * from "./downloadAllSearch";
+export * from "./downloadAllTopVideos";
 export * from "./getOwnerVideos";
 export * from "./getTopVideos";
+export * from "./search";
 
 export type TClip = {
   files: TFiles;

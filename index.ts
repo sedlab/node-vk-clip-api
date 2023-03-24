@@ -37,7 +37,35 @@
 //   });
 
 // // Получает персонализированную ленту с преднастройками.
-// clip.getTopVideos({ tag: "бизнес", count: 1 })
+// clip.getTopVideos({ count: 1 })
+//   .then((resp) => {
+//     console.dir(resp, { depth: null });
+//   })
+//   .catch((error) => {
+//     console.dir(error, { depth: null });
+//   });
+
+// const dir = path.join(__dirname, "clips");
+
+// clip.downloadAllTopVideos(dir, { count: 5 })
+//   .then((resp) => {
+//     console.dir(resp, { depth: null });
+//   })
+//   .catch((error) => {
+//     console.dir(error, { depth: null });
+//   });
+
+// clip.search({ q: "бизнес" })
+//   .then((resp) => {
+//     console.dir(resp, { depth: null });
+//   })
+//   .catch((error) => {
+//     console.dir(error, { depth: null });
+//   });
+
+// const dir = path.join(__dirname, "clips");
+
+// clip.downloadAllSearch(dir, { q: "бизнес" }, (clip) => clip.views > 10000 && clip.likes.count > 1000 && clip.comments > 10)
 //   .then((resp) => {
 //     console.dir(resp, { depth: null });
 //   })

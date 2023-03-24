@@ -1,16 +1,7 @@
-import { TGetOwnerVideosParams } from "../types";
+import { TClip, TGetOwnerVideosParams, TDownloadResponse } from "../types";
 
-export type TDownloadAllOwnerVideosRequest = (dir: string, params: TDownloadAllOwnerVideosParams) => Promise<TDownloadAllOwnerVideosResponse>;
+export type TDownloadAllOwnerVideosRequest = (dir: string, params: TDownloadAllOwnerVideosParams, filterCallback?: (clip: TClip) => boolean) => Promise<TDownloadAllOwnerVideosResponse>;
 
 export type TDownloadAllOwnerVideosParams = TGetOwnerVideosParams;
 
-export type TDownloadAllOwnerVideosResponse = {
-  response: {
-    count: number;
-    items: Array<number>;
-  };
-  error: {
-    count: number;
-    items: Array<number>;
-  };
-};
+export type TDownloadAllOwnerVideosResponse = TDownloadResponse;
