@@ -13,9 +13,9 @@ type TCreateParams = {
 };
 type TCreateResponse = boolean;
 
-type TDownloadAllOwnerVideosRequest = (dir: string, params: TDownloadAllOwnerVideosParams) => Promise<TDownloadAllOwnerVideosResponse>;
-type TDownloadAllOwnerVideosParams = TGetOwnerVideosParams;
-type TDownloadAllOwnerVideosResponse = {
+type TDownloadRequest = (dir: string, items: TDownloadParams, filterCallback?: (video: TClip) => boolean) => Promise<TDownloadResponse>;
+type TDownloadParams = Array<TClip>;
+type TDownloadResponse = {
     response: {
         count: number;
         items: Array<number>;
@@ -25,6 +25,18 @@ type TDownloadAllOwnerVideosResponse = {
         items: Array<number>;
     };
 };
+
+type TDownloadAllOwnerVideosRequest = (dir: string, params: TDownloadAllOwnerVideosParams, filterCallback?: (clip: TClip) => boolean) => Promise<TDownloadAllOwnerVideosResponse>;
+type TDownloadAllOwnerVideosParams = TGetOwnerVideosParams;
+type TDownloadAllOwnerVideosResponse = TDownloadResponse;
+
+type TDownloadAllSearchRequest = (dir: string, params: TDownloadAllSearchParams, filterCallback?: (clip: TClip) => boolean) => Promise<TDownloadAllSearchResponse>;
+type TDownloadAllSearchParams = TGetTopVideosParams;
+type TDownloadAllSearchResponse = TDownloadResponse;
+
+type TDownloadAllTopVideosRequest = (dir: string, params: TDownloadAllTopVideosParams, filterCallback?: (clip: TClip) => boolean) => Promise<TDownloadAllTopVideosResponse>;
+type TDownloadAllTopVideosParams = TGetTopVideosParams;
+type TDownloadAllTopVideosResponse = TDownloadResponse;
 
 type TGetOwnerVideosRequest = (params: TGetOwnerVideosParams) => Promise<TGetOwnerVideosResponse>;
 type TGetOwnerVideosParams = {
@@ -39,15 +51,25 @@ type TGetOwnerVideosResponse = {
 };
 
 type TGetTopVideosRequest = (params: TGetTopVideosParams) => Promise<TGetTopVideosResponse>;
-type TGetTopVideosParams = {
-    tag?: string;
-    count?: number;
-} & any;
+type TGetTopVideosParams = any;
 type TGetTopVideosResponse = {
     count: number;
     items: Array<TClip>;
     next_from: string;
     groups: Array<TGroup>;
+};
+
+type TSearchRequest = (params: TSearchParams) => Promise<TSearchResponse>;
+type TSearchParams = any;
+type TSearchResponse = {
+    catalog: {
+        default_section: string;
+        sections: any;
+    };
+    profiles: any;
+    groups: any;
+    videos: Array<TClip>;
+    albums: any;
 };
 
 type TClip = {
@@ -243,8 +265,12 @@ declare class ShortVideo {
     constructor(token: string, agent?: string);
     create: TCreateRequest;
     getOwnerVideos: TGetOwnerVideosRequest;
-    downloadAllOwnerVideos: TDownloadAllOwnerVideosRequest;
     getTopVideos: TGetTopVideosRequest;
+    search: TSearchRequest;
+    download: TDownloadRequest;
+    downloadAllOwnerVideos: TDownloadAllOwnerVideosRequest;
+    downloadAllTopVideos: TDownloadAllTopVideosRequest;
+    downloadAllSearch: TDownloadAllSearchRequest;
 }
 
 export { ShortVideo };
