@@ -38,6 +38,10 @@ type TDownloadAllTopVideosRequest = (dir: string, params: TDownloadAllTopVideosP
 type TDownloadAllTopVideosParams = TGetTopVideosParams;
 type TDownloadAllTopVideosResponse = TDownloadResponse;
 
+type TGetCollectionRequest = (params: TGetCollectionParams) => Promise<TGetCollectionResponse>;
+type TGetCollectionParams = any;
+type TGetCollectionResponse = any;
+
 type TGetOwnerVideosRequest = (params: TGetOwnerVideosParams) => Promise<TGetOwnerVideosResponse>;
 type TGetOwnerVideosParams = {
     owner_id: number;
@@ -264,6 +268,7 @@ declare class ShortVideo {
     #private;
     constructor(token: string, agent?: string);
     create: TCreateRequest;
+    getCollection: TGetCollectionRequest;
     getOwnerVideos: TGetOwnerVideosRequest;
     getTopVideos: TGetTopVideosRequest;
     search: TSearchRequest;

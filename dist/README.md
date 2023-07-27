@@ -100,24 +100,6 @@ clip.getTopVideos({ count: 1 })
 #### Скачивание всех клипов персонализированной ленты с преднастройками.
 
 ```js
-import { ShortVideo } from "node-vk-clip-api";
-
-const TOKEN = ""; // access_token.
-
-const clip = new ShortVideo(TOKEN);
-
-clip.downloadAllTopVideos({ count: 1 })
-  .then((resp) => {
-    console.dir(resp, { depth: null });
-  })
-  .catch((error) => {
-    console.dir(error, { depth: null });
-  });
-```
-
-#### Скачивание всех клипов персонализированной ленты с преднастройками.
-
-```js
 import path from "node:path";
 import { ShortVideo } from "node-vk-clip-api";
 

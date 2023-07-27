@@ -3,6 +3,7 @@ export * from "./download";
 export * from "./downloadAllOwnerVideos";
 export * from "./downloadAllSearch";
 export * from "./downloadAllTopVideos";
+export * from "./getCollection";
 export * from "./getOwnerVideos";
 export * from "./getTopVideos";
 export * from "./search";

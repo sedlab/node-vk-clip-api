@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import axios from "axios";
 
-import { TCreateRequest, TGetOwnerVideosRequest, TGetTopVideosRequest, TSearchRequest, TDownloadRequest, TDownloadAllOwnerVideosRequest, TDownloadAllTopVideosRequest, TDownloadAllSearchRequest } from "./types";
+import { TCreateRequest, TGetCollectionRequest, TGetOwnerVideosRequest, TGetTopVideosRequest, TSearchRequest, TDownloadRequest, TDownloadAllOwnerVideosRequest, TDownloadAllTopVideosRequest, TDownloadAllSearchRequest } from "./types";
 
 export class ShortVideo {
   #ACCESS_TOKEN: string;
@@ -56,6 +56,13 @@ export class ShortVideo {
       .catch((error) => {
         reject(error);
       });
+  });
+
+  getCollection: TGetCollectionRequest = (params) => new Promise((resolve, reject) => {
+    // Возвращает клипы коллекции.
+    this.#VK.request("shortVideo.getCollection", { ...params })
+      .then((data) => resolve(data))
+      .catch((error) => reject(error));
   });
 
   getOwnerVideos: TGetOwnerVideosRequest = (params) => new Promise((resolve, reject) => {
@@ -159,4 +166,3 @@ export class ShortVideo {
       .catch((error) => reject(error));
   });
 };
-

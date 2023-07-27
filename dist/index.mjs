@@ -41,6 +41,9 @@ class ShortVideo {
       reject(error);
     });
   });
+  getCollection = (params) => new Promise((resolve, reject) => {
+    this.#VK.request("shortVideo.getCollection", { ...params }).then((data) => resolve(data)).catch((error) => reject(error));
+  });
   getOwnerVideos = (params) => new Promise((resolve, reject) => {
     this.#VK.request("shortVideo.getOwnerVideos", { ...params }).then((data) => resolve(data)).catch((error) => reject(error));
   });
